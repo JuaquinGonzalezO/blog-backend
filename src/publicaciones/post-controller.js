@@ -10,8 +10,7 @@ export const createPost = async (req, res) => {
       const partes = data.fechaCreacion.split('/');
       data.fechaCreacion = new Date(`${partes[2]}-${partes[1]}-${partes[0]}`);
     }
-
-    const post = new Post({ ...data });
+    const post = new Post({ ...data, status: true });
     await post.save();
 
    
@@ -30,21 +29,21 @@ export const createPost = async (req, res) => {
 };
 export const getPosts = async (req, res) => {
   try {
-    const { id } = req.params;
-    const post = await Post.findById(id).populate('cursoId', 'nombre descripcion');
+   const query = {status:true}
+    const post = await Post.find(query).populate('cursoId', 'nombre descripcion');
     if (!post) {
       return res.status(404).json({ success: false, message: 'Post no encontrado' });
     }
-    res.json({ success: true, post });
+    return res.json({ success: true, post });
   } catch (error) {
     console.error('Error getting post', error);
-    res.status(500).json({ success: false, message: 'Error al obtener post', error: error.message });
+    return res.status(500).json({ success: false, message: 'Error al obtener post', error: error.message });
   }
 };
 export const getSearchPostsByName = async (req, res) => {
   try {
     const { name } = req.query;
-    const cleanName = name.trim(); // 👈 importante
+    const cleanName = name.trim(); 
 
     const posts = await Post.find({
       titulo: { $regex: cleanName, $options: 'i' }

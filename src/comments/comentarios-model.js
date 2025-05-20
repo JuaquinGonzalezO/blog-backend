@@ -14,6 +14,10 @@ const ComentarioSchema = Schema(
     type: Date,
     default: Date.now
   },
+  state: {
+    type: Boolean,
+    default: true
+  },
   publicacionId: { type: Schema.Types.ObjectId, ref: 'Post' }
 });
 

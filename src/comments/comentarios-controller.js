@@ -29,15 +29,8 @@ export const createComment = async (req, res) => {
 };
 export const getComments = async (req, res) => {
     try {
-        const { limite = 10, desde = 0 } = req.query;
-
-        const [total, commentsRaw] = await Promise.all([
-            Post.countDocuments(),
-            Post.find()
-                .skip(Number(desde))
-                .limit(Number(limite))
-        ]);
-        return res.status(200).json({ success: true, total, comments: commentsRaw });
+        const comments = await Comentario.find({state:true})
+        return res.status(200).json({ success: true, comments });
     } catch (error) {
         console.error("Error getting comments", error);
         return res.status(500).json({ success: false, message: 'Error getting comments', error: error.message });

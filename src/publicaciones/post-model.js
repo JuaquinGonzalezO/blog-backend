@@ -17,6 +17,10 @@ const PostSchema = Schema(
   cursoId: {
     type: Schema.Types.ObjectId,
     ref: 'Curso'
+  },
+  status:{
+    type: Boolean,
+    default: true
   }
 })
 
